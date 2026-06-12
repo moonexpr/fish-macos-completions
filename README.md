@@ -41,6 +41,13 @@ tab completion never hangs, hits the network, or prompts for a password.
 
 ## Install
 
+**With the install script** — symlinks everything into fish's user completion
+directory (`./install.fish --remove` undoes it):
+
+```fish
+./install.fish
+```
+
 **Manually** — symlink (or copy) into fish's completion path:
 
 ```fish
