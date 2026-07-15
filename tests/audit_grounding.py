@@ -21,6 +21,15 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 COMP = os.path.join(ROOT, "completions")
 
+# Tools whose help probes have side effects, mapped to the probe list that is
+# safe for them. screencapture treats ANY non-option argument as an output
+# filename and takes a real screenshot (shutter sound and all) — so it gets
+# no help probes, man page only.
+SAFE_HELP_ARGS = {
+    "screencapture": [],
+}
+DEFAULT_HELP_ARGS = [["--help"], ["-h"], ["help"]]
+
 
 def reference_text(tool: str) -> str:
     """man page + help output, best-effort, never hangs."""
@@ -31,7 +40,7 @@ def reference_text(tool: str) -> str:
                                      capture_output=True, text=True, timeout=10).stdout)
     except Exception:
         pass
-    for help_args in (["--help"], ["-h"], ["help"]):
+    for help_args in SAFE_HELP_ARGS.get(tool, DEFAULT_HELP_ARGS):
         try:
             r = subprocess.run([tool] + help_args, capture_output=True, text=True,
                                timeout=5, stdin=subprocess.DEVNULL)

@@ -96,15 +96,24 @@ def collect_findings(only):
 
 
 def parse_verdicts(text):
-    """Extract the JSON array from the model's reply, tolerating fences."""
-    m = re.search(r"\[.*\]", text, re.DOTALL)
-    if not m:
-        return None
-    try:
-        data = json.loads(m.group(0))
-    except json.JSONDecodeError:
-        return None
-    return data if isinstance(data, list) else None
+    """Extract the verdict array from the model's reply.
+
+    Models sometimes wrap the JSON in reasoning prose or fences, and the
+    prose itself may contain stray brackets, so scan every '[' and take the
+    LAST position where a JSON array of verdict-shaped objects decodes.
+    """
+    decoder = json.JSONDecoder()
+    best = None
+    for m in re.finditer(r"\[", text):
+        try:
+            data, _ = decoder.raw_decode(text, m.start())
+        except json.JSONDecodeError:
+            continue
+        if (isinstance(data, list) and data
+                and all(isinstance(d, dict) and "token" in d and "verdict" in d
+                        for d in data)):
+            best = data
+    return best
 
 
 async def judge_tool(runner, user_id, tool, entry):
@@ -169,7 +178,10 @@ async def main():
 
     if args.json:
         print(json.dumps(report, indent=1))
-        return 0
+        return 1 if any(
+            "error" in b or any(str(v.get("verdict", "")).upper() == "FABRICATED"
+                                for v in b.get("verdicts", []))
+            for b in report.values()) else 0
 
     counts = {"VALID": 0, "PLAUSIBLE": 0, "FABRICATED": 0}
     for tool in sorted(report):
