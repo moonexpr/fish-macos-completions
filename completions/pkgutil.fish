@@ -46,14 +46,14 @@ end
 
 # ── global modifier options ───────────────────────────────────────────────────
 # These may appear before or alongside any primary command.
-complete -c pkgutil -l help     -s h -f -d 'Show a brief summary of commands and usage'
-complete -c pkgutil -l force    -s f -f -d 'Do not ask for confirmation before destructive operations'
-complete -c pkgutil -l verbose  -s v -f -d 'Output in human-readable format with extra context'
-complete -c pkgutil -l volume       -d 'Perform operations on the specified volume or home directory' -x -a '(__fish_complete_directories)'
-complete -c pkgutil -l only-files   -f -d 'List only files (not directories) in --files listing'
-complete -c pkgutil -l only-dirs    -f -d 'List only directories (not files) in --files listing'
-complete -c pkgutil -l regexp       -f -d 'Match package-id arguments as a regular expression'
-complete -c pkgutil -l edit-pkg     -d 'Specify existing receipt to be modified in-place by --learn' -x -a '(__fish_pkgutil_pkg_ids)'
+complete -c pkgutil -l help -s h -f -d 'Show a brief summary of commands and usage'
+complete -c pkgutil -l force -s f -f -d 'Do not ask for confirmation before destructive operations'
+complete -c pkgutil -l verbose -s v -f -d 'Output in human-readable format with extra context'
+complete -c pkgutil -l volume -d 'Perform operations on the specified volume or home directory' -x -a '(__fish_complete_directories)'
+complete -c pkgutil -l only-files -f -d 'List only files (not directories) in --files listing'
+complete -c pkgutil -l only-dirs -f -d 'List only directories (not files) in --files listing'
+complete -c pkgutil -l regexp -f -d 'Match package-id arguments as a regular expression'
+complete -c pkgutil -l edit-pkg -d 'Specify existing receipt to be modified in-place by --learn' -x -a '(__fish_pkgutil_pkg_ids)'
 
 # ── primary commands: receipt database ───────────────────────────────────────
 complete -c pkgutil -n __fish_pkgutil_no_primary_cmd \

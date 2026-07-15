@@ -24,11 +24,11 @@ end
 
 # ── principal operations ──────────────────────────────────────────────────────
 
-complete -c spctl -l assess  -s a -d 'Assess one or more files against system policy'
-complete -c spctl -l status            -f -d 'Query whether the assessment subsystem is enabled or disabled'
-complete -c spctl -l global-enable     -f -d 'Enable the assessment subsystem (requires root)'
-complete -c spctl -l global-disable    -f -d 'Reveal the "allow apps from anywhere" option in Privacy & Security'
-complete -c spctl -l disable-status    -f -d 'Query whether the "allow apps from anywhere" option is available'
+complete -c spctl -l assess -s a -d 'Assess one or more files against system policy'
+complete -c spctl -l status -f -d 'Query whether the assessment subsystem is enabled or disabled'
+complete -c spctl -l global-enable -f -d 'Enable the assessment subsystem (requires root)'
+complete -c spctl -l global-disable -f -d 'Reveal the "allow apps from anywhere" option in Privacy & Security'
+complete -c spctl -l disable-status -f -d 'Query whether the "allow apps from anywhere" option is available'
 
 # ── assessment modifiers (active when --assess / -a is present) ───────────────
 
@@ -59,10 +59,10 @@ complete -c spctl -n __fish_spctl_has_assess \
 
 # ── deprecated rule-database operations (macOS 15+) ──────────────────────────
 
-complete -c spctl -l add           -f -d '(Deprecated macOS 15+) Add rule(s) to the assessment rule database'
-complete -c spctl -l remove        -f -d '(Deprecated macOS 15+) Remove rule(s) from the assessment rule database'
-complete -c spctl -l enable        -f -d '(Deprecated macOS 15+) Enable rule(s) in the assessment rule database'
-complete -c spctl -l disable       -f -d '(Deprecated macOS 15+) Disable rule(s) in the assessment rule database'
+complete -c spctl -l add -f -d '(Deprecated macOS 15+) Add rule(s) to the assessment rule database'
+complete -c spctl -l remove -f -d '(Deprecated macOS 15+) Remove rule(s) from the assessment rule database'
+complete -c spctl -l enable -f -d '(Deprecated macOS 15+) Enable rule(s) in the assessment rule database'
+complete -c spctl -l disable -f -d '(Deprecated macOS 15+) Disable rule(s) in the assessment rule database'
 complete -c spctl -l reset-default -f -d '(Deprecated macOS 15+) Reset system policy database to default (requires root, then reboot)'
 
 # ── deprecated rule-database modifiers ───────────────────────────────────────

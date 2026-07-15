@@ -24,32 +24,32 @@ end
 
 # ── top-level subcommands ────────────────────────────────────────────
 complete -c csrutil -f -n __fish_csrutil_no_subcommand \
-    -a status       -d 'Display SIP configuration of the running (or each Recovery) OS'
+    -a status -d 'Display SIP configuration of the running (or each Recovery) OS'
 complete -c csrutil -f -n __fish_csrutil_no_subcommand \
-    -a enable       -d 'Enable System Integrity Protection (Recovery OS only)'
+    -a enable -d 'Enable System Integrity Protection (Recovery OS only)'
 complete -c csrutil -f -n __fish_csrutil_no_subcommand \
-    -a disable      -d 'Disable System Integrity Protection (Recovery OS only)'
+    -a disable -d 'Disable System Integrity Protection (Recovery OS only)'
 complete -c csrutil -f -n __fish_csrutil_no_subcommand \
-    -a clear        -d 'Clear the existing SIP configuration'
+    -a clear -d 'Clear the existing SIP configuration'
 complete -c csrutil -f -n __fish_csrutil_no_subcommand \
     -a authenticated-root \
-                    -d 'Manage authenticated-root (sealed system snapshot) policy'
+    -d 'Manage authenticated-root (sealed system snapshot) policy'
 complete -c csrutil -f -n __fish_csrutil_no_subcommand \
     -a allow-research-guests \
-                    -d 'Manage allow-research-guests policy'
+    -d 'Manage allow-research-guests policy'
 
 # ── authenticated-root sub-verbs ─────────────────────────────────────
 complete -c csrutil -f -n __fish_csrutil_doing_authenticated_root \
-    -a status   -d 'Show the current authenticated-root setting'
+    -a status -d 'Show the current authenticated-root setting'
 complete -c csrutil -f -n __fish_csrutil_doing_authenticated_root \
-    -a enable   -d 'Only allow booting from sealed system snapshots (Recovery OS only)'
+    -a enable -d 'Only allow booting from sealed system snapshots (Recovery OS only)'
 complete -c csrutil -f -n __fish_csrutil_doing_authenticated_root \
-    -a disable  -d 'Allow booting from non-sealed system snapshots (Recovery OS only)'
+    -a disable -d 'Allow booting from non-sealed system snapshots (Recovery OS only)'
 
 # ── allow-research-guests sub-verbs ──────────────────────────────────
 complete -c csrutil -f -n __fish_csrutil_doing_allow_research_guests \
-    -a status   -d 'Show the current allow-research-guests setting'
+    -a status -d 'Show the current allow-research-guests setting'
 complete -c csrutil -f -n __fish_csrutil_doing_allow_research_guests \
-    -a enable   -d 'Allow research guests (Recovery OS only)'
+    -a enable -d 'Allow research guests (Recovery OS only)'
 complete -c csrutil -f -n __fish_csrutil_doing_allow_research_guests \
-    -a disable  -d 'Disallow research guests (Recovery OS only)'
+    -a disable -d 'Disallow research guests (Recovery OS only)'
