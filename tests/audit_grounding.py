@@ -30,6 +30,14 @@ SAFE_HELP_ARGS = {
 }
 DEFAULT_HELP_ARGS = [["--help"], ["-h"], ["help"]]
 
+# Extra reference commands for tools whose vocabulary lives in sub-help or
+# capability output that man + top-level help do not carry. Same constraints
+# as the help probes: fast, unprivileged, no side effects.
+EXTRA_REF_CMDS = {
+    "scutil": [["scutil", "--nc", "help"]],
+    "pmset": [["pmset", "-g", "cap"]],
+}
+
 
 def reference_text(tool: str) -> str:
     """man page + help output, best-effort, never hangs."""
@@ -40,9 +48,11 @@ def reference_text(tool: str) -> str:
                                      capture_output=True, text=True, timeout=10).stdout)
     except Exception:
         pass
-    for help_args in SAFE_HELP_ARGS.get(tool, DEFAULT_HELP_ARGS):
+    probes = [[tool] + args for args in SAFE_HELP_ARGS.get(tool, DEFAULT_HELP_ARGS)]
+    probes += EXTRA_REF_CMDS.get(tool, [])
+    for argv in probes:
         try:
-            r = subprocess.run([tool] + help_args, capture_output=True, text=True,
+            r = subprocess.run(argv, capture_output=True, text=True,
                                timeout=5, stdin=subprocess.DEVNULL)
             chunks.append(r.stdout)
             chunks.append(r.stderr)

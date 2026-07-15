@@ -75,6 +75,10 @@ Respond with ONLY a JSON array, no prose, one object per token:
 
 def collect_findings(only):
     """Run the deterministic audit; return {tool: {"flags": [...], "values": [...]}}."""
+    known = {fn[:-5] for fn in os.listdir(COMP) if fn.endswith(".fish")}
+    unknown = only - known
+    if unknown:
+        raise SystemExit(f"no completion file for: {', '.join(sorted(unknown))}")
     findings = {}
     for fn in sorted(os.listdir(COMP)):
         if not fn.endswith(".fish"):
@@ -116,7 +120,7 @@ def parse_verdicts(text):
     return best
 
 
-async def judge_tool(runner, user_id, tool, entry):
+async def judge_tool(runner, user_id, tool, entry, attempts=2):
     tokens = [{"token": t, "kind": "flag"} for t in entry["flags"]] + [
         {"token": t, "kind": "value"} for t in entry["values"]
     ]
@@ -127,21 +131,31 @@ async def judge_tool(runner, user_id, tool, entry):
         f"-----\n{entry['ref'][:MAX_REF_CHARS]}\n-----\n"
         f"Return the JSON array of verdicts now."
     )
-    session = await runner.session_service.create_session(
-        app_name=runner.app_name, user_id=user_id
-    )
-    reply = []
-    async for event in runner.run_async(
-        user_id=user_id,
-        session_id=session.id,
-        new_message=types.Content(role="user", parts=[types.Part(text=prompt)]),
-    ):
-        if event.content and event.content.parts:
-            reply.extend(p.text for p in event.content.parts if p.text)
-    verdicts = parse_verdicts("".join(reply))
-    if verdicts is None:
-        return tool, None, "".join(reply)[-400:]
-    return tool, verdicts, None
+    last_reply = ""
+    for attempt in range(attempts):
+        session = await runner.session_service.create_session(
+            app_name=runner.app_name, user_id=user_id
+        )
+        nudge = (
+            "" if attempt == 0 else
+            "\n\nYour previous reply could not be parsed. Reply with ONLY the"
+            " JSON array of verdict objects — every object needs token, kind,"
+            " verdict, and reason keys — and judge EVERY listed token."
+        )
+        reply = []
+        async for event in runner.run_async(
+            user_id=user_id,
+            session_id=session.id,
+            new_message=types.Content(role="user",
+                                      parts=[types.Part(text=prompt + nudge)]),
+        ):
+            if event.content and event.content.parts:
+                reply.extend(p.text for p in event.content.parts if p.text)
+        last_reply = "".join(reply)
+        verdicts = parse_verdicts(last_reply)
+        if verdicts is not None:
+            return tool, verdicts, None
+    return tool, None, last_reply[-400:]
 
 
 async def main():

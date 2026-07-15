@@ -36,6 +36,10 @@ def main():
     errors = []    # (model, tool, message)
     for path in sys.argv[1:]:
         model = model_name(path)
+        n = 2
+        while model in reports:   # same basename twice: keep both, suffixed
+            model = f"{model_name(path)}#{n}"
+            n += 1
         data = json.load(open(path, encoding="utf-8"))
         verdicts = {}
         for tool, body in data.items():
