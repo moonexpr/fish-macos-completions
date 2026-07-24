@@ -5,17 +5,17 @@
 
 # ── live enumerators ─────────────────────────────────────────────────
 function __fish_system_profiler_data_types
-    system_profiler -listDataTypes 2>/dev/null | tail -n +2
+    system_profiler -listDataTypes &>/dev/null | tail -n +2
 end
 
 # True when -detailLevel has already been given (so its argument should be offered).
 function __fish_system_profiler_needs_detail_arg
-    contains -- -detailLevel (commandline -opc)
+    contains -- -detailLevel (commandline -xpc)
 end
 
 # True when -timeout has already been given (so its argument should be offered).
 function __fish_system_profiler_needs_timeout_arg
-    contains -- -timeout (commandline -opc)
+    contains -- -timeout (commandline -xpc)
 end
 
 # ── flags ─────────────────────────────────────────────────────────────

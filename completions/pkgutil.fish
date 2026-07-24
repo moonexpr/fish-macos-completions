@@ -8,7 +8,7 @@
 # Return the primary command flag seen on the current commandline (without dashes),
 # or exit non-zero if none has been chosen yet.
 function __fish_pkgutil_primary_cmd
-    set -l toks (commandline -opc)
+    set -l toks (commandline -xpc)
     set -e toks[1]
     # Primary commands are those that are not pure modifier options
     set -l primaries \
@@ -30,18 +30,18 @@ end
 
 # True when no primary command has been seen yet.
 function __fish_pkgutil_no_primary_cmd
-    not __fish_pkgutil_primary_cmd >/dev/null 2>&1
+    not __fish_pkgutil_primary_cmd &>/dev/null
 end
 
 # ── live enumerators ──────────────────────────────────────────────────────────
 # List installed package IDs (fast, unprivileged).
 function __fish_pkgutil_pkg_ids
-    pkgutil --pkgs 2>/dev/null
+    pkgutil --pkgs &>/dev/null
 end
 
 # List package group IDs (fast, unprivileged).
 function __fish_pkgutil_group_ids
-    pkgutil --groups 2>/dev/null
+    pkgutil --groups &>/dev/null
 end
 
 # ── global modifier options ───────────────────────────────────────────────────

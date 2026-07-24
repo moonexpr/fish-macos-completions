@@ -9,7 +9,7 @@
 
 # Print the primary flag (first -x / --xxx token after "scutil").
 function __fish_scutil_flag
-    set -l toks (commandline -opc)
+    set -l toks (commandline -xpc)
     set -e toks[1]
     for t in $toks
         if string match -qr '^-' -- $t
@@ -22,19 +22,20 @@ end
 
 # True when no primary flag has been chosen yet.
 function __fish_scutil_no_flag
-    not __fish_scutil_flag >/dev/null 2>&1
+    not __fish_scutil_flag &>/dev/null
 end
 
 # True when the primary flag equals the given string (e.g. "--nc").
 function __fish_scutil_flag_is
     set -l f (__fish_scutil_flag)
-    test "$f" = "$argv[1]"
+    string length -q -- $f
+    and test "$f" = "$argv[1]"
 end
 
 # True when --nc is active and no nc sub-verb is yet on the line.
 function __fish_scutil_nc_no_verb
     __fish_scutil_flag_is --nc; or return 1
-    set -l toks (commandline -opc)
+    set -l toks (commandline -xpc)
     for v in list status show statistics select start stop suspend resume \
         ondemand trigger enablevpn disablevpn help
         if contains -- $v $toks
@@ -47,7 +48,7 @@ end
 # True when --nc is active and the given sub-verb is on the line.
 function __fish_scutil_nc_verb_is
     __fish_scutil_flag_is --nc; or return 1
-    contains -- $argv[1] (commandline -opc)
+    contains -- $argv[1] (commandline -xpc)
 end
 
 # ── live enumerators ─────────────────────────────────────────────────
@@ -55,7 +56,7 @@ end
 # VPN service display names from `scutil --nc list`.
 # Output line format: ...  "Service Name"  [VPN:type]
 function __fish_scutil_nc_services
-    scutil --nc list 2>/dev/null \
+    scutil --nc list &>/dev/null \
         | string replace -rf '.*"([^"]+)"\s*(\[.*\])?\s*$' '$1'
 end
 

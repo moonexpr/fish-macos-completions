@@ -8,12 +8,12 @@
 
 # Local group names from dscl (fast, unprivileged)
 function __fish_dseditgroup_groups
-    dscl . -list /Groups 2>/dev/null
+    dscl . -list /Groups &>/dev/null
 end
 
 # Local user names from dscl (fast, unprivileged)
 function __fish_dseditgroup_users
-    dscl . -list /Users 2>/dev/null
+    dscl . -list /Users &>/dev/null
 end
 
 # ── options ───────────────────────────────────────────────────────────────────

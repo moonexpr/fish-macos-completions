@@ -7,7 +7,7 @@
 
 # ── helper: true when the previous token on the commandline is one of the given values ──
 function __fish_sips_prev_is
-    set -l tokens (commandline -opc)
+    set -l tokens (commandline -xpc)
     set -l n (count $tokens)
     if test $n -lt 2
         return 1
@@ -120,7 +120,7 @@ end
 
 # true when `-s format` (or `--setProperty format`) was typed and we want the format value
 function __fish_sips_wants_format_value
-    set -l tokens (commandline -opc)
+    set -l tokens (commandline -xpc)
     set -l n (count $tokens)
     if test $n -lt 3
         return 1
@@ -135,7 +135,7 @@ end
 
 # true when `-s formatOptions` was typed and we want the options value
 function __fish_sips_wants_formatopts_value
-    set -l tokens (commandline -opc)
+    set -l tokens (commandline -xpc)
     set -l n (count $tokens)
     if test $n -lt 3
         return 1
@@ -155,7 +155,7 @@ end
 # true when prev token is -M/--matchToWithIntent and a profile has already been supplied
 # (i.e. we are at the intent argument position)
 function __fish_sips_wants_intent
-    set -l tokens (commandline -opc)
+    set -l tokens (commandline -xpc)
     set -l n (count $tokens)
     # walk backwards: if we find -M/--matchToWithIntent two positions back, the
     # immediately previous token is the profile and we now want the intent.

@@ -6,7 +6,7 @@
 # ── command-line introspection ───────────────────────────────────────
 
 # Primary command tokens — one of these must appear for a cmd to be "chosen".
-set -l __fish_softwareupdate_cmds \
+set -l softwareupdate_cmds \
     --list -l --download -d --install -i \
     --list-full-installers --fetch-full-installer \
     --install-rosetta --background --schedule \
@@ -14,10 +14,10 @@ set -l __fish_softwareupdate_cmds \
     --help -h
 
 # True when no primary command flag has been typed yet.
-function __fish_softwareupdate_no_cmd
-    set -l toks (commandline -opc)
+function __fish_softwareupdate_no_cmd --inherit-variable softwareupdate_cmds
+    set -l toks (commandline -xpc)
     for tok in $toks[2..]
-        if contains -- $tok $__fish_softwareupdate_cmds
+        if contains -- $tok $softwareupdate_cmds
             return 1
         end
     end
@@ -26,29 +26,29 @@ end
 
 # True when --install or -i is among the tokens already typed.
 function __fish_softwareupdate_doing_install
-    contains -- --install (commandline -opc)
-    or contains -- -i (commandline -opc)
+    contains -- --install (commandline -xpc)
+    or contains -- -i (commandline -xpc)
 end
 
 # True when --download or -d is among the tokens already typed.
 function __fish_softwareupdate_doing_download
-    contains -- --download (commandline -opc)
-    or contains -- -d (commandline -opc)
+    contains -- --download (commandline -xpc)
+    or contains -- -d (commandline -xpc)
 end
 
 # True when --fetch-full-installer is among the tokens already typed.
 function __fish_softwareupdate_doing_fetch
-    contains -- --fetch-full-installer (commandline -opc)
+    contains -- --fetch-full-installer (commandline -xpc)
 end
 
 # True when --schedule is among the tokens already typed.
 function __fish_softwareupdate_doing_schedule
-    contains -- --schedule (commandline -opc)
+    contains -- --schedule (commandline -xpc)
 end
 
 # True when --install-rosetta is among the tokens already typed.
 function __fish_softwareupdate_doing_rosetta
-    contains -- --install-rosetta (commandline -opc)
+    contains -- --install-rosetta (commandline -xpc)
 end
 
 # ── primary commands ─────────────────────────────────────────────────

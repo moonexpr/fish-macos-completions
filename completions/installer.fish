@@ -7,22 +7,22 @@
 # ── command-line introspection ───────────────────────────────────────
 # True when -pkg has already been given on the command line.
 function __fish_installer_has_pkg
-    contains -- -pkg (commandline -opc)
-    or contains -- -package (commandline -opc)
+    contains -- -pkg (commandline -xpc)
+    or contains -- -package (commandline -xpc)
 end
 
 # True when -target has already been given on the command line.
 function __fish_installer_has_target
-    contains -- -target (commandline -opc)
-    or contains -- -tgt (commandline -opc)
+    contains -- -target (commandline -xpc)
+    or contains -- -tgt (commandline -xpc)
 end
 
 # ── live enumerators ─────────────────────────────────────────────────
 # List mounted volumes: /Volumes/* plus the root mount point /.
 function __fish_installer_volumes
     echo /
-    ls /Volumes 2>/dev/null | while read -l v
-        echo /Volumes/$v
+    for v in /Volumes/*
+        echo $v
     end
 end
 

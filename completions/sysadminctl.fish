@@ -7,7 +7,7 @@
 # ── command-line introspection ────────────────────────────────────────
 # Print the verb (first dashed token after the command), without its dash.
 function __fish_sysadminctl_verb
-    set -l toks (commandline -opc)
+    set -l toks (commandline -xpc)
     set -e toks[1]
     for t in $toks
         if string match -q -- '-*' $t
@@ -20,13 +20,13 @@ end
 
 # True when no verb has been chosen yet (so verbs should be offered).
 function __fish_sysadminctl_no_verb
-    not __fish_sysadminctl_verb >/dev/null 2>&1
+    not __fish_sysadminctl_verb &>/dev/null
 end
 
 # ── live enumerators ──────────────────────────────────────────────────
 # List non-system local users (exclude accounts starting with _).
 function __fish_sysadminctl_users
-    dscl . -list /Users 2>/dev/null | grep -v '^_'
+    dscl . -list /Users | string match -rv '^_'
 end
 
 # ── verbs ─────────────────────────────────────────────────────────────

@@ -10,7 +10,7 @@
 
 # Return the first bare-word (non-flag) token after "pmset", if any.
 function __fish_pmset_action
-    set -l toks (commandline -opc)
+    set -l toks (commandline -xpc)
     set -e toks[1] # drop "pmset" itself
     for t in $toks
         if not string match -q -- '-*' $t
@@ -23,7 +23,7 @@ end
 
 # True when no action word and no selector flag is present yet.
 function __fish_pmset_no_verb
-    set -l toks (commandline -opc)
+    set -l toks (commandline -xpc)
     set -e toks[1]
     for t in $toks
         # Any recognised flag or action word counts as "verb seen"
@@ -40,29 +40,28 @@ end
 
 # True when -g is on the command line (get mode).
 function __fish_pmset_has_g
-    contains -- -g (commandline -opc)
+    contains -- -g (commandline -xpc)
 end
 
 # True when a specific action word is present.
 function __fish_pmset_action_is
-    set -l want $argv
-    set -l act (__fish_pmset_action 2>/dev/null)
-    contains -- $act $want
+    set -l act (__fish_pmset_action)
+    and contains -- $act $argv
 end
 
 # True when the commandline already has a -g sub-argument (live/custom/cap/…).
 function __fish_pmset_g_has_subarg
-    set -l toks (commandline -opc)
-    set -l saw_g 0
+    set -l toks (commandline -xpc)
+    set -l saw_g false
     for t in $toks
-        if test $saw_g -eq 1
+        if $saw_g
             # The token after -g — if it exists and is not a flag, it's the sub-arg
             if not string match -q -- '-*' $t
                 return 0
             end
         end
         if test "$t" = -g
-            set saw_g 1
+            set saw_g true
         end
     end
     return 1
@@ -77,16 +76,16 @@ function __fish_pmset_schedule_needs_type
 end
 
 function __fish_pmset_schedule_has_type
-    set -l toks (commandline -opc)
-    set -l saw_sched 0
+    set -l toks (commandline -xpc)
+    set -l saw_sched false
     for t in $toks
-        if test $saw_sched -eq 1
+        if $saw_sched
             if contains -- $t sleep wake poweron shutdown wakeorpoweron cancel cancelall
                 return 0
             end
         end
         if test "$t" = schedule
-            set saw_sched 1
+            set saw_sched true
         end
     end
     return 1
@@ -99,16 +98,16 @@ function __fish_pmset_repeat_needs_type
 end
 
 function __fish_pmset_repeat_has_type
-    set -l toks (commandline -opc)
-    set -l saw 0
+    set -l toks (commandline -xpc)
+    set -l saw false
     for t in $toks
-        if test $saw -eq 1
+        if $saw
             if contains -- $t sleep wake poweron shutdown wakeorpoweron cancel
                 return 0
             end
         end
         if test "$t" = repeat
-            set saw 1
+            set saw true
         end
     end
     return 1
@@ -166,11 +165,11 @@ complete -c pmset -n '__fish_pmset_has_g; and not __fish_pmset_g_has_subarg' -f 
 # Condition: a selector (-a/-b/-c/-u) is present, -g is NOT present, and no
 # action word is present.
 function __fish_pmset_setting_mode
-    set -l toks (commandline -opc)
-    set -l has_sel 0
+    set -l toks (commandline -xpc)
+    set -l has_sel false
     for t in $toks
         if string match -qr -- '^-[abcu]$' $t
-            set has_sel 1
+            set has_sel true
         end
         if test "$t" = -g
             return 1
@@ -180,7 +179,7 @@ function __fish_pmset_setting_mode
             return 1
         end
     end
-    test $has_sel -eq 1
+    test "$has_sel" = true
 end
 
 complete -c pmset -n __fish_pmset_setting_mode -f -a displaysleep -d 'Display sleep timer in minutes (0=never)'
@@ -213,7 +212,7 @@ complete -c pmset -n __fish_pmset_setting_mode -f -a autopoweroffdelay -d 'Secon
 
 # ── UPS-specific settings (only meaningful after -u) ─────────────────────────
 function __fish_pmset_ups_mode
-    contains -- -u (commandline -opc)
+    contains -- -u (commandline -xpc)
     and not __fish_pmset_has_g
 end
 

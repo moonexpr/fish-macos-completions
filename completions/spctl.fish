@@ -8,13 +8,13 @@
 
 # True when the assess operation is present on the command line.
 function __fish_spctl_has_assess
-    contains -- --assess (commandline -opc)
-    or contains -- -a (commandline -opc)
+    contains -- --assess (commandline -xpc)
+    or contains -- -a (commandline -xpc)
 end
 
 # True when any deprecated rule-modification operation is present.
 function __fish_spctl_has_rule_op
-    set -l toks (commandline -opc)
+    set -l toks (commandline -xpc)
     contains -- --add $toks
     or contains -- --remove $toks
     or contains -- --enable $toks

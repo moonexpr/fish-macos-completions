@@ -7,7 +7,7 @@
 # ── command-line introspection ───────────────────────────────────────
 # Print the subcommand verb (first non-option token after the command name).
 function __fish_profiles_verb
-    set -l toks (commandline -opc)
+    set -l toks (commandline -xpc)
     set -e toks[1]
     for t in $toks
         if not string match -q -- '-*' $t
@@ -20,13 +20,13 @@ end
 
 # True when no verb has been chosen yet.
 function __fish_profiles_no_verb
-    not __fish_profiles_verb >/dev/null 2>&1
+    not __fish_profiles_verb &>/dev/null
 end
 
 # True when the given verb is active.
 function __fish_profiles_using_verb
-    set -l v (__fish_profiles_verb 2>/dev/null)
-    test -n "$v" && test "$v" = "$argv[1]"
+    set -l v (__fish_profiles_verb)
+    test "$v" = "$argv[1]"
 end
 
 # ── verbs ────────────────────────────────────────────────────────────

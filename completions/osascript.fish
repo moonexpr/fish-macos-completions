@@ -6,7 +6,7 @@
 # ── helper: enumerate installed OSA languages ────────────────────────
 function __fish_osascript_languages
     # osalang(1) lists one language per line; fast and unprivileged
-    osalang 2>/dev/null
+    osalang &>/dev/null
 end
 
 # ── flags ────────────────────────────────────────────────────────────
