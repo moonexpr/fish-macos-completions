@@ -20,10 +20,8 @@ end
 # ── live enumerators ─────────────────────────────────────────────────
 # List mounted volumes: /Volumes/* plus the root mount point /.
 function __fish_installer_volumes
-    echo /
-    for v in /Volumes/*
-        echo $v
-    end
+    set -l volumes / /Volumes/*
+    printf '%s\n' $volumes
 end
 
 # ── flags (no verb gating — all flags are top-level) ─────────────────
