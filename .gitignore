@@ -3,3 +3,10 @@
 WORKPLAN.md
 .venv/
 __pycache__/
+
+
+# claude framework (personal methods)
+PROJECT.md
+WORKPLAN.md
+.claude/agents/
+CLAUDE.local.md
