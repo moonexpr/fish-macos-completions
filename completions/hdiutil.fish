@@ -8,7 +8,7 @@
 # ── command-line introspection ───────────────────────────────────────
 # Print the chosen verb (first non-dash token after the command), if any.
 function __fish_hdiutil_verb
-    set -l toks (commandline -opc)
+    set -l toks (commandline -xpc)
     set -e toks[1]
     for t in $toks
         if not string match -q -- '-*' $t
@@ -21,14 +21,13 @@ end
 
 # True when no verb has been chosen yet (so verbs should be offered).
 function __fish_hdiutil_no_verb
-    not __fish_hdiutil_verb >/dev/null 2>&1
+    not __fish_hdiutil_verb &>/dev/null
 end
 
 # ── live enumerators ─────────────────────────────────────────────────
 # Attached /dev disk nodes, parsed from `hdiutil info` (fast, unprivileged).
 function __fish_hdiutil_devices
-    hdiutil info 2>/dev/null | string match -r -- '/dev/disk[0-9]+s?[0-9]*' \
-        | string match -r -- '^/dev/disk[0-9s]+$' | sort -u
+    hdiutil info &>/dev/null | string match -r -- '/dev/disk[0-9]+s?[0-9]*' | sort -u
 end
 
 # ── verbs ────────────────────────────────────────────────────────────

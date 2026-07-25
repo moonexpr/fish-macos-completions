@@ -10,7 +10,7 @@
 # look like:  1) <hash> "Apple Development: name (TEAMID)" — extract the
 # quoted common-name and offer it as the -s/--sign value.
 function __fish_codesign_identities
-    security find-identity -v -p codesigning 2>/dev/null \
+    security find-identity -v -p codesigning &>/dev/null \
         | string match -r '"[^"]+"' \
         | string trim -c '"'
 end

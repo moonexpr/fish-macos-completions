@@ -8,7 +8,7 @@
 # ── command-line introspection ───────────────────────────────────────
 # Print the verb (first dashed token after the command), without its dash.
 function __fish_networksetup_verb
-    set -l toks (commandline -opc)
+    set -l toks (commandline -xpc)
     set -e toks[1]
     for t in $toks
         if string match -q -- '-*' $t
@@ -21,35 +21,35 @@ end
 
 # True when no verb has been chosen yet (so verbs should be offered).
 function __fish_networksetup_no_verb
-    not __fish_networksetup_verb >/dev/null 2>&1
+    not __fish_networksetup_verb &>/dev/null
 end
 
 # ── live enumerators ─────────────────────────────────────────────────
 function __fish_networksetup_services
-    networksetup -listallnetworkservices 2>/dev/null | tail -n +2 \
+    networksetup -listallnetworkservices &>/dev/null | tail -n +2 \
         | string replace -r '^\*\s*' ''
 end
 
 function __fish_networksetup_hardwareports
-    networksetup -listallhardwareports 2>/dev/null \
+    networksetup -listallhardwareports &>/dev/null \
         | string replace -rf '^Hardware Port: ' ''
 end
 
 function __fish_networksetup_devices
-    networksetup -listallhardwareports 2>/dev/null \
+    networksetup -listallhardwareports &>/dev/null \
         | string replace -rf '^Device: ' ''
 end
 
 function __fish_networksetup_locations
-    networksetup -listlocations 2>/dev/null
+    networksetup -listlocations &>/dev/null
 end
 
 function __fish_networksetup_bonds
-    networksetup -listBonds 2>/dev/null
+    networksetup -listBonds &>/dev/null
 end
 
 function __fish_networksetup_pppoe
-    networksetup -listpppoeservices 2>/dev/null
+    networksetup -listpppoeservices &>/dev/null
 end
 
 # ── verbs ────────────────────────────────────────────────────────────

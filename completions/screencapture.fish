@@ -33,16 +33,16 @@ complete -c screencapture -s T -x -d 'Take the picture after a delay of the give
 
 # -t <format>: image format values
 complete -c screencapture -s t -x -d 'Image format to create (default: png)'
-complete -c screencapture -n '__fish_seen_argument -s t' -f -a 'png' -d 'PNG image'
-complete -c screencapture -n '__fish_seen_argument -s t' -f -a 'jpg' -d 'JPEG image'
-complete -c screencapture -n '__fish_seen_argument -s t' -f -a 'jpeg' -d 'JPEG image'
-complete -c screencapture -n '__fish_seen_argument -s t' -f -a 'pdf' -d 'PDF document'
-complete -c screencapture -n '__fish_seen_argument -s t' -f -a 'tiff' -d 'TIFF image'
-complete -c screencapture -n '__fish_seen_argument -s t' -f -a 'bmp' -d 'BMP image'
-complete -c screencapture -n '__fish_seen_argument -s t' -f -a 'gif' -d 'GIF image'
+complete -c screencapture -n '__fish_seen_argument -s t' -f -a png -d 'PNG image'
+complete -c screencapture -n '__fish_seen_argument -s t' -f -a jpg -d 'JPEG image'
+complete -c screencapture -n '__fish_seen_argument -s t' -f -a jpeg -d 'JPEG image'
+complete -c screencapture -n '__fish_seen_argument -s t' -f -a pdf -d 'PDF document'
+complete -c screencapture -n '__fish_seen_argument -s t' -f -a tiff -d 'TIFF image'
+complete -c screencapture -n '__fish_seen_argument -s t' -f -a bmp -d 'BMP image'
+complete -c screencapture -n '__fish_seen_argument -s t' -f -a gif -d 'GIF image'
 
 # -J <style>: interactive capture style
 complete -c screencapture -s J -x -d 'Set the starting style of interactive capture'
-complete -c screencapture -n '__fish_seen_argument -s J' -f -a 'selection' -d 'Start in mouse-selection mode'
-complete -c screencapture -n '__fish_seen_argument -s J' -f -a 'window'    -d 'Start in window-selection mode'
-complete -c screencapture -n '__fish_seen_argument -s J' -f -a 'video'     -d 'Start in video-recording mode'
+complete -c screencapture -n '__fish_seen_argument -s J' -f -a selection -d 'Start in mouse-selection mode'
+complete -c screencapture -n '__fish_seen_argument -s J' -f -a window -d 'Start in window-selection mode'
+complete -c screencapture -n '__fish_seen_argument -s J' -f -a video -d 'Start in video-recording mode'

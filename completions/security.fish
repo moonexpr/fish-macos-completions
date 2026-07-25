@@ -9,7 +9,7 @@
 # Keychains in the current search list. `list-keychains` prints quoted,
 # indented paths; strip the quotes and surrounding whitespace.
 function __fish_security_keychains
-    security list-keychains 2>/dev/null \
+    security list-keychains &>/dev/null \
         | string trim \
         | string trim -c '"' \
         | string match -v ''
@@ -77,7 +77,7 @@ complete -c security -f -n __fish_use_subcommand -a error -d 'Display a descript
 complete -c security -f -n __fish_use_subcommand -a requirement-evaluate -d 'Evaluate a code requirement against a certificate chain'
 
 # ── help ─────────────────────────────────────────────────────────────
-complete -c security -f -n '__fish_seen_subcommand_from help' -a '(security help 2>/dev/null | string match -r "^\s+\S+" | string trim)'
+complete -c security -f -n '__fish_seen_subcommand_from help' -a '(security help &>/dev/null | string match -r "^\s+\S+" | string trim)'
 
 # ── list-keychains / default-keychain / login-keychain ───────────────
 complete -c security -f -n '__fish_seen_subcommand_from list-keychains default-keychain login-keychain' -s d -x -a 'user system common dynamic' -d 'Use the specified preference domain'
